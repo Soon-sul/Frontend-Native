@@ -64,3 +64,8 @@ yarn-error.log
 
 # testing
 /coverage
+
+# 추가
+.env
+node_modules/
+yarn.lock

@@ -1,28 +1,20 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-
 import {SafeAreaView} from 'react-native';
-// import type {PropsWithChildren} from 'react';
 import WebView from 'react-native-webview';
+import {onMessage} from './src/Share';
 
-function App(): JSX.Element {
+const App = () => {
   return (
-    <>
-      <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-        <WebView
-          source={{uri: 'https://soonsool.vercel.app'}}
-          allowsInlineMediaPlayback={true}
-          mediaPlaybackRequiresUserAction={false}
-        />
-      </SafeAreaView>
-    </>
+    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+      <WebView
+        source={{uri: 'https://f9f6-211-197-13-149.ngrok-free.app'}}
+        onMessage={onMessage}
+        injectedJavaScript={`window.share = function() { window.ReactNativeWebView.postMessage('share:' + window.location.href); }; true;`}
+        allowsInlineMediaPlayback={true}
+        mediaPlaybackRequiresUserAction={false}
+      />
+    </SafeAreaView>
   );
-}
+};
 
 export default App;
