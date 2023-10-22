@@ -6,16 +6,12 @@
  */
 
 import React, {useRef} from 'react';
-
 import {SafeAreaView} from 'react-native';
 import {WebView, WebViewMessageEvent} from 'react-native-webview';
 
 function App(): JSX.Element {
   const webviewRef = useRef<WebView | null>(null);
   const site = 'https://soonsool.vercel.app';
-
-  const userAgent =
-    'Mozilla/5.0 (Linux; Android 12; Pixel a5 Build/SP1A.210812.016) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/114.0.5735.130 Mobile Safari/537.36';
 
   const handleSetRef = (ref: WebView | null) => {
     webviewRef.current = ref;
@@ -31,7 +27,8 @@ function App(): JSX.Element {
       <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
         <WebView
           source={{uri: site}}
-          userAgent={userAgent}
+          userAgent="Mozilla/5.0 (Linux; Win64; x64; rv:46.0)r Gecko/20100101 Firefox/68.0"
+          originWhitelist={['https://*', 'http://*', 'file://*', 'sms://*']}
           allowsInlineMediaPlayback={true}
           mediaPlaybackRequiresUserAction={false}
           onMessage={handleOnMessage}
