@@ -10,7 +10,7 @@ const shareUrl = async (url: string) => {
   }
 };
 
-export const onMessage = (event: any) => {
+export const onShareMessage = (event: any) => {
   const {data} = event.nativeEvent;
   if (data.startsWith('share:')) {
     const url = data.substring(6);

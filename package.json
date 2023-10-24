@@ -12,8 +12,10 @@
     "apk:android": "yarn install --frozen-lockfile && cd android && ./gradlew assembleRelease && cd .. && start android/app/build/outputs/apk/release"
   },
   "dependencies": {
+    "@react-native-community/geolocation": "^3.1.0",
     "react": "18.2.0",
     "react-native": "0.72.4",
+    "react-native-permissions": "^3.10.0",
     "react-native-webview": "^13.6.0"
   },
   "devDependencies": {
