@@ -1,43 +1,37 @@
 import React, {useRef} from 'react';
 import {SafeAreaView} from 'react-native';
-import WebView from 'react-native-webview';
-// import Geolocation from '@react-native-community/geolocation';
-// import {onShareMessage} from './src/utils/Share';
+import {WebView, WebViewMessageEvent} from 'react-native-webview';
 
-const App = () => {
-  const webviewRef = useRef(null);
+function App(): JSX.Element {
+  const webviewRef = useRef<WebView | null>(null);
+  // const site = 'https://soonsool.vercel.app';
+  const site = 'https://76c9-211-197-13-149.ngrok-free.app';
 
-  // const onMessage = (event: any) => {
-  //   const {data} = event.nativeEvent;
-  //   if (data.startsWith('share:')) {
-  //     onShareMessage(event);
-  //   } else if (data === 'request_location') {
-  //     Geolocation.getCurrentPosition(
-  //       position => {
-  //         const {latitude, longitude} = position.coords;
-  //         webviewRef.current.postMessage(JSON.stringify({latitude, longitude}));
-  //       },
-  //       error => console.log(error),
-  //       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
-  //     );
-  //   }
-  // };
+  const handleSetRef = (ref: WebView | null) => {
+    webviewRef.current = ref;
+  };
 
-  const onMessage = () => {};
+  const handleOnMessage = ({nativeEvent}: WebViewMessageEvent) => {
+    const {data} = nativeEvent;
+    console.log(data);
+  };
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-      <WebView
-        ref={webviewRef}
-        source={{
-          uri: 'https://76c9-211-197-13-149.ngrok-free.app',
-        }}
-        onMessage={onMessage}
-        allowsInlineMediaPlayback={true}
-        mediaPlaybackRequiresUserAction={false}
-      />
-    </SafeAreaView>
+    <>
+      <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+        <WebView
+          source={{uri: site}}
+          userAgent="Mozilla/5.0 (Linux; Win64; x64; rv:46.0)r Gecko/20100101 Firefox/68.0"
+          originWhitelist={['https://*', 'http://*', 'file://*', 'sms://*']}
+          allowsInlineMediaPlayback={true}
+          mediaPlaybackRequiresUserAction={false}
+          onMessage={handleOnMessage}
+          allowsBackForwardNavigationGestures
+          ref={handleSetRef}
+        />
+      </SafeAreaView>
+    </>
   );
-};
+}
 
 export default App;
