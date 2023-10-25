@@ -6,9 +6,7 @@ import usePermission from './src/hooks/usePermission';
 function App(): JSX.Element {
   const webviewRef = useRef<WebView | null>(null);
   usePermission();
-  // const site = 'https://soonsool.vercel.app';
-  const site =
-    'https://cb19-2001-e60-8702-b39c-a160-8483-8c0e-3a42.ngrok-free.app';
+  const site = 'https://soonsool.vercel.app';
 
   const handleSetRef = (ref: WebView | null) => {
     webviewRef.current = ref;

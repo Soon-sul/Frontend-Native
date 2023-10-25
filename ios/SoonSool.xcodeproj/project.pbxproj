@@ -535,7 +535,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.soonsool;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.soonsoolApp;
 				PRODUCT_NAME = SoonSool;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;

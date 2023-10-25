@@ -1,4 +1,4 @@
-package com.soonsool;
+package com.soonsoolApp;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
