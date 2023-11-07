@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "398021608908",
+    "project_id": "soonsool",
+    "storage_bucket": "soonsool.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:398021608908:android:24c239e730e8a83cc54969",
+        "android_client_info": {
+          "package_name": "com.soonsoolApp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnB-elKtZ086gzSgXcRusDRY3SnuFH8A8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
