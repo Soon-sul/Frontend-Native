@@ -1,21 +1,10 @@
-<<<<<<< HEAD
-import React, {useRef} from 'react';
-import {SafeAreaView} from 'react-native';
-import {WebView, WebViewMessageEvent} from 'react-native-webview';
-import usePermission from './src/hooks/usePermission';
-
-function App(): JSX.Element {
-  const webviewRef = useRef<WebView | null>(null);
-  usePermission();
-  const site = 'https://soonsool.vercel.app';
-
-=======
 import React, {useEffect, useRef} from 'react';
 import {SafeAreaView} from 'react-native';
 import {WebView, WebViewMessageEvent} from 'react-native-webview';
 import messaging from '@react-native-firebase/messaging';
 import PushNotification from 'react-native-push-notification';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import usePermission from './src/hooks/usePermission';
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
   console.log('Message handled in the background!', remoteMessage);
@@ -81,10 +70,10 @@ PushNotification.createChannel(
 );
 
 function App(): JSX.Element {
+  usePermission();
   const webviewRef = useRef<WebView | null>(null);
   // const site = 'https://soonsool.vercel.app';
   const site = 'https://4cbf-211-197-13-149.ngrok-free.app';
->>>>>>> main
   const handleSetRef = (ref: WebView | null) => {
     webviewRef.current = ref;
   };
