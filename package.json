@@ -12,10 +12,20 @@
     "apk:android": "yarn install --frozen-lockfile && cd android && ./gradlew assembleRelease && cd .. && start android/app/build/outputs/apk/release"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@react-native-community/geolocation": "^3.1.0",
     "react": "18.2.0",
     "react-native": "0.72.4",
     "react-native-permissions": "^3.10.0",
+=======
+    "@react-native-community/push-notification-ios": "^1.11.0",
+    "@react-native-firebase/analytics": "^18.6.0",
+    "@react-native-firebase/app": "^18.6.0",
+    "@react-native-firebase/messaging": "^18.6.0",
+    "react": "18.2.0",
+    "react-native": "0.72.4",
+    "react-native-push-notification": "^8.1.1",
+>>>>>>> main
     "react-native-user-agent": "^2.3.1",
     "react-native-webview": "^13.6.0"
   },
@@ -27,6 +37,7 @@
     "@react-native/metro-config": "^0.72.11",
     "@tsconfig/react-native": "^3.0.2",
     "@types/react": "^18.0.24",
+    "@types/react-native-push-notification": "^8.1.3",
     "@types/react-test-renderer": "^18.0.0",
     "babel-jest": "^29.2.1",
     "eslint": "^8.19.0",
