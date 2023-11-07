@@ -1,10 +1,8 @@
-import React, {useEffect, useRef} from 'react';
-import {SafeAreaView} from 'react-native';
-import {WebView, WebViewMessageEvent} from 'react-native-webview';
-import messaging from '@react-native-firebase/messaging';
-import PushNotification from 'react-native-push-notification';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
-import usePermission from './src/hooks/usePermission';
+import messaging from '@react-native-firebase/messaging';
+import React from 'react';
+import PushNotification from 'react-native-push-notification';
+import AppInner from './AppInner';
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
   console.log('Message handled in the background!', remoteMessage);
@@ -70,65 +68,7 @@ PushNotification.createChannel(
 );
 
 function App(): JSX.Element {
-  usePermission();
-  const webviewRef = useRef<WebView | null>(null);
-  // const site = 'https://soonsool.vercel.app';
-  const site = 'https://4cbf-211-197-13-149.ngrok-free.app';
-  const handleSetRef = (ref: WebView | null) => {
-    webviewRef.current = ref;
-  };
-
-  const handleOnMessage = ({nativeEvent}: WebViewMessageEvent) => {
-    const {data} = nativeEvent;
-    console.log(data);
-  };
-
-  const sendMessageToWebView = (token: string) => {
-    const message = {
-      type: 'device_token',
-      token: token,
-    };
-
-    const script = `window.postMessage(${JSON.stringify(message)}, '*');`;
-    if (webviewRef.current) {
-      webviewRef.current.injectJavaScript(script);
-    }
-  };
-
-  useEffect(() => {
-    async function getToken() {
-      try {
-        if (!messaging().isDeviceRegisteredForRemoteMessages) {
-          await messaging().registerDeviceForRemoteMessages();
-        }
-        const token = await messaging().getToken();
-        sendMessageToWebView(token);
-      } catch (error) {
-        if (error instanceof Error) {
-          console.log('Error', error.message);
-        }
-      }
-    }
-
-    getToken();
-  }, []);
-
-  return (
-    <>
-      <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-        <WebView
-          source={{uri: site}}
-          userAgent="Mozilla/5.0 (Linux; Win64; x64; rv:46.0)r Gecko/20100101 Firefox/68.0"
-          originWhitelist={['https://*', 'http://*', 'file://*', 'sms://*']}
-          allowsInlineMediaPlayback={true}
-          mediaPlaybackRequiresUserAction={false}
-          onMessage={handleOnMessage}
-          allowsBackForwardNavigationGestures
-          ref={handleSetRef}
-        />
-      </SafeAreaView>
-    </>
-  );
+  return <AppInner />;
 }
 
 export default App;
