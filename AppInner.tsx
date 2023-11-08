@@ -69,6 +69,7 @@ const AppInner = () => {
         ref={handleSetRef}
         onMessage={handleOnMessage}
         injectedJavaScript={injectedJavaScript}
+        userAgent="Mozilla/5.0 (Linux; Win64; x64; rv:46.0)r Gecko/20100101 Firefox/68.0"
         originWhitelist={['https://*', 'http://*', 'file://*', 'sms://*']}
         allowsInlineMediaPlayback={true}
         mediaPlaybackRequiresUserAction={false}
