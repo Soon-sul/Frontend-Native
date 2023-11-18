@@ -5,105 +5,73 @@ import {
   request,
   PERMISSIONS,
   RESULTS,
-  checkNotifications,
   requestNotifications,
+  Permission,
 } from 'react-native-permissions';
 
 const usePermission = () => {
+  //* 권한 요청 함수
+  const requestPermission = async (permission: Permission) => {
+    const result = await request(permission);
+    if (result === RESULTS.BLOCKED || result === RESULTS.DENIED) {
+      const permissionName = permission.split('.').pop(); // 권한 이름 추출
+      Alert.alert(
+        `${permissionName} 권한 필요`,
+        `이 앱에서는 ${permissionName} 기능을 사용하기 위해 권한이 필요합니다. 설정에서 권한을 허용해주세요.`,
+        [
+          {text: '설정으로 이동', onPress: () => Linking.openSettings()},
+          {text: '취소', style: 'cancel'},
+        ],
+      );
+    }
+  };
+
+  //* 특정 권한 확인 및 요청
+  const checkAndRequestSpecificPermission = async (
+    permission: Permission | undefined,
+  ) => {
+    if (permission) {
+      const result = await check(permission);
+      if (result === RESULTS.BLOCKED || result === RESULTS.DENIED) {
+        requestPermission(permission);
+      }
+    }
+  };
+
+  //* 알림 권한 요청
   useEffect(() => {
-    const requestNotificationPermission = async () => {
-      const {status} = await requestNotifications(['alert', 'sound']);
+    requestNotifications(['alert', 'sound']).then(({status}) => {
       if (status === 'denied' || status === 'blocked') {
         Alert.alert(
           '알림 권한 필요',
           '알림을 받기 위해 권한이 필요합니다. 설정에서 알림 권한을 허용해주세요.',
           [
-            {
-              text: '설정으로 이동',
-              onPress: () => Linking.openSettings(),
-            },
-            {
-              text: '취소',
-              style: 'cancel',
-            },
+            {text: '설정으로 이동', onPress: () => Linking.openSettings()},
+            {text: '취소', style: 'cancel'},
           ],
         );
       }
-    };
-
-    const checkAndRequestPermission = async () => {
-      if (Platform.OS === 'ios') {
-        // iOS 알림 권한 확인 및 요청 로직
-        checkNotifications().then(({status}) => {
-          if (status === 'denied' || status === 'blocked') {
-            requestNotificationPermission();
-          }
-        });
-      } else if (Platform.OS === 'android') {
-        // 안드로이드에서는 사용자가 앱의 알림을 차단했는지 확인합니다.
-        checkNotifications().then(({status}) => {
-          if (status === 'denied' || status === 'blocked') {
-            Alert.alert(
-              '알림 차단됨',
-              '앱의 알림이 차단되었습니다. 설정에서 알림을 허용해주세요.',
-              [
-                {
-                  text: '설정으로 이동',
-                  onPress: () => Linking.openSettings(),
-                },
-                {
-                  text: '취소',
-                  style: 'cancel',
-                },
-              ],
-            );
-          }
-        });
-      }
-    };
-
-    checkAndRequestPermission();
+    });
   }, []);
 
+  //* 위치 권한 요청
   useEffect(() => {
-    const requestPermission = async (permission: any) => {
-      const result = await request(permission);
-      if (result === RESULTS.BLOCKED || result === RESULTS.DENIED) {
-        Alert.alert(
-          '이 앱은 위치 권한 허용이 필요합니다.',
-          '위치 권한을 허용해주세요.',
-          [
-            {
-              text: '확인',
-              onPress: () => requestPermission(permission),
-            },
-            {
-              text: '취소',
-              onPress: () => console.log('Permission denied'),
-              style: 'cancel',
-            },
-          ],
-        );
-      }
-    };
+    const locationPermission: Permission | undefined = Platform.select({
+      android: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+      ios: PERMISSIONS.IOS.LOCATION_ALWAYS,
+    });
+    checkAndRequestSpecificPermission(locationPermission);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    if (Platform.OS === 'android') {
-      check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION)
-        .then(result => {
-          if (result === RESULTS.BLOCKED || result === RESULTS.DENIED) {
-            requestPermission(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
-          }
-        })
-        .catch(console.error);
-    } else if (Platform.OS === 'ios') {
-      check(PERMISSIONS.IOS.LOCATION_ALWAYS)
-        .then(result => {
-          if (result === RESULTS.BLOCKED || result === RESULTS.DENIED) {
-            requestPermission(PERMISSIONS.IOS.LOCATION_ALWAYS);
-          }
-        })
-        .catch(console.error);
-    }
+  //* 카메라 권한 요청
+  useEffect(() => {
+    const cameraPermission: Permission | undefined = Platform.select({
+      android: PERMISSIONS.ANDROID.CAMERA,
+      ios: PERMISSIONS.IOS.CAMERA,
+    });
+    checkAndRequestSpecificPermission(cameraPermission);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };
 
