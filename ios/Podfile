@@ -28,6 +28,7 @@ end
 target 'SoonSool' do
   config = use_native_modules!
 
+  pod 'GoogleUtilities', :modular_headers => true
   permissions_path = '../node_modules/react-native-permissions/ios'
   pod 'Permission-LocationAccuracy', :path => "#{permissions_path}/LocationAccuracy"
   pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
