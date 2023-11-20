@@ -89,8 +89,9 @@ android {
         applicationId "com.soonsoolApp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 4
-        versionName "1.0.4"
+        versionCode 5
+        versionName "1.0.5"
+        resValue "string", "build_config_package", applicationId
     }
     signingConfigs {
         debug {
@@ -102,12 +103,13 @@ android {
 
         release {
             if (project.hasProperty('RELEASE_STORE_FILE')) {
-                storeFile file(project.env.get("RELEASE_STORE_FILE"))
-                storePassword project.env.get("RELEASE_STORE_PASSWORD")
-                keyAlias project.env.get("RELEASE_KEY_ALIAS")
-                keyPassword project.env.get("RELEASE_KEY_PASSWORD")
+                storeFile file(project.env['RELEASE_STORE_FILE'])
+                storePassword project.env['RELEASE_STORE_PASSWORD']
+                keyAlias project.env['RELEASE_KEY_ALIAS']
+                keyPassword project.env['RELEASE_KEY_PASSWORD']
             }
         }
+
     }
     buildTypes {
         debug {

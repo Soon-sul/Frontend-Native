@@ -4,6 +4,7 @@ import WebView from 'react-native-webview';
 import usePermission from './src/hooks/usePermission';
 import useToken from './src/hooks/useToken';
 import Config from 'react-native-config';
+import {onShareMessage} from './src/utils/Share';
 
 const AppInner = () => {
   const webviewRef = useRef(null);
@@ -34,10 +35,11 @@ const AppInner = () => {
     const {data} = event.nativeEvent;
     if (data === 'navigationStateChange') {
       setCanGoBack(event.nativeEvent.canGoBack);
+    } else if (data.startsWith('share:')) {
+      onShareMessage(event);
     }
     console.log(data);
   };
-
   const handleSetRef = _ref => {
     webviewRef.current = _ref;
   };
