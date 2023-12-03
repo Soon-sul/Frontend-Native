@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {Alert, Linking, Platform} from 'react-native';
 import {
   check,
@@ -8,8 +8,46 @@ import {
   requestNotifications,
   Permission,
 } from 'react-native-permissions';
+import messaging from '@react-native-firebase/messaging';
 
 const usePermission = () => {
+  const [fcmToken, setFcmToken] = useState<string | null>(null);
+
+  const requestUserPermissionForFCM = async () => {
+    const authStatus = await messaging().requestPermission();
+
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      console.log('fcm token:', fcmToken);
+      console.log('Authorization status:', authStatus);
+    } else {
+      console.log('fcm auth fail');
+    }
+  };
+
+  useEffect(() => {
+    requestUserPermissionForFCM();
+  });
+
+  useEffect(() => {
+    messaging()
+      .getToken()
+      .then(token => {
+        setFcmToken(token);
+      });
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = messaging().onTokenRefresh(token => {
+      setFcmToken(token);
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
   //* 권한 요청 함수
   const requestPermission = async (permission: Permission) => {
     const result = await request(permission);
