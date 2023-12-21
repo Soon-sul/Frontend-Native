@@ -67,7 +67,7 @@ const AppInner = () => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <WebView
-        source={{uri: BASE_URL}}
+        source={{uri: 'https://soonsool.vercel.app'}}
         ref={handleSetRef}
         onMessage={handleOnMessage}
         injectedJavaScript={injectedJavaScript}
