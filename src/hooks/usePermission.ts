@@ -9,9 +9,22 @@ import {
   Permission,
 } from 'react-native-permissions';
 import messaging from '@react-native-firebase/messaging';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const usePermission = () => {
   const [fcmToken, setFcmToken] = useState<string | null>(null);
+  const [userToken, setUserToken] = useState<string>('');
+
+  useEffect(() => {
+    const getData = async () => {
+      const storageData = await AsyncStorage.getItem('accessToken');
+      if (storageData && storageData.length > 0) {
+        setUserToken(storageData);
+      }
+    };
+    // AsyncStorage에 저장된 데이터가 있다면, 불러온다.
+    getData();
+  }, []);
 
   const requestUserPermissionForFCM = async () => {
     const authStatus = await messaging().requestPermission();
@@ -100,7 +113,7 @@ const usePermission = () => {
     });
     checkAndRequestSpecificPermission(locationPermission);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [userToken]);
 
   //* 카메라 권한 요청
   useEffect(() => {

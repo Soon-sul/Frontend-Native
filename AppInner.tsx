@@ -3,14 +3,12 @@ import {SafeAreaView, BackHandler} from 'react-native';
 import WebView from 'react-native-webview';
 import usePermission from './src/hooks/usePermission';
 import useToken from './src/hooks/useToken';
-import Config from 'react-native-config';
 import {onShareMessage} from './src/utils/Share';
+import {saveAccessToken} from './src/utils/SaveAccessToken';
 
 const AppInner = () => {
   const webviewRef = useRef(null);
   const [canGoBack, setCanGoBack] = useState(false);
-
-  const BASE_URL = Config.BASE_URL;
 
   usePermission();
   useToken(webviewRef);
@@ -31,18 +29,31 @@ const AppInner = () => {
     };
   }, [canGoBack]);
 
-  const handleOnMessage = event => {
+  const handleOnMessage = async (event: any) => {
     const {data} = event.nativeEvent;
     if (data === 'navigationStateChange') {
       setCanGoBack(event.nativeEvent.canGoBack);
     } else if (data.startsWith('share:')) {
       onShareMessage(event);
+    } else if (data.startsWith('accessToken:')) {
+      const accessToken = data.split(':')[1];
+      saveAccessToken(accessToken);
     }
-    console.log(data);
   };
   const handleSetRef = _ref => {
     webviewRef.current = _ref;
   };
+
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     const storageData = await AsyncStorage.getItem('accessToken');
+  //     if (storageData && storageData.length > 0) {
+  //       webviewRef.current?.postMessage(storageData);
+  //     }
+  //   };
+  //   // AsyncStorage에 저장된 데이터가 있다면, 불러온다.
+  //   getData();
+  // }, []);
 
   const injectedJavaScript = `
     (function() {
